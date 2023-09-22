@@ -1,5 +1,5 @@
 "--------------------------
-" VSCode Color like Scheme
+" VSCode like Color Scheme
 "--------------------------
 set background=dark
 autocmd FileType * setlocal formatoptions-=ro
