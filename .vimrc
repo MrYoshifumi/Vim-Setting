@@ -1,5 +1,5 @@
 "--------------------------
-" VSCode like Color Scheme
+" VSCode Color like Scheme
 "--------------------------
 set background=dark
 autocmd FileType * setlocal formatoptions-=ro
@@ -59,10 +59,10 @@ hi LineNr cterm=NONE ctermfg=102
 "-----------------------
 " Backup
 "-----------------------
-""set backup
+"set backup
 "set backupdir=.
 "
-""-----------------------
+"-----------------------
 " Search
 " -----------------------
 set history=1000
@@ -71,9 +71,9 @@ set tags=
 set hlsearch
 set mouse-=a
 " set incsearch
-""-----------------------
+"-----------------------
 " Vim-tags
-" "-----------------------
+"-----------------------
 nnoremap <C-]> :<C-u>tab stj <C-R>=expand('<cword>')<CR><CR>
 
 "-------------
@@ -104,19 +104,20 @@ nnoremap <space>t :tabnew<space>
 " If you want to create a new tab on the Left side of current tab,
 " use 「 :tabnew xxx/xxx | tabmove -1 」
 
+
 " Flags
 let numberFlag = 0
 
 " Switch ON line number
 if numberFlag == 1
-  " Show Line Number
-  nnoremap <space>n :set number<CR>
-  let numberFlag = 0
-  " Switch OFF
-  else
-  " Hide Line Number
-  nnoremap <space>n :set number!<CR>
-  let numberFlag = 1
+    " Show Line Number
+    nnoremap <space>n :set number<CR>
+    let numberFlag = 0
+" Switch OFF
+else
+    " Hide Line Number
+    nnoremap <space>n :set number!<CR>
+    let numberFlag = 1
 endif
 
 " Redo code with [Ctrl + z] in any mode
@@ -145,45 +146,44 @@ inoremap <C-r> <ESC> :e<CR>
 " ビジュアルモードで、内容を選択して「\ + c」を押すとコメントアウトされます
 "（「\ + 大文字 C」 →コメント外す）
 function! CommentMark(docomment, a, b)
-  if !exists('b:comment')
-    let b:comment = CommentStr() . ' '
-  endif
-  if a:docomment
-    exe "normal! '" . a:a . "_\<C-V>'" . a:b . 'I' . b:comment
-  else
-    exe "'".a:a.",'".a:b . 's/^\(\s*\)' . escape(b:comment,'/') . '/\1/e'
-  endif
+    if !exists('b:comment')
+	let b:comment = CommentStr() . ' '
+    endif
+    if a:docomment
+	exe "normal! '" . a:a . "_\<C-V>'" . a:b . 'I' . b:comment
+    else
+	exe "'".a:a.",'".a:b . 's/^\(\s*\)' . escape(b:comment,'/') . '/\1/e'
+    endif
 endfunction
 
 " Comment lines in marks set by g@ operator.
 function! DoCommentOp(type)
-  call CommentMark(1, '[', ']')
+    call CommentMark(1, '[', ']')
 endfunction
 
 " Uncomment lines in marks set by g@ operator.
 function! UnCommentOp(type)
-  call CommentMark(0, '[', ']')
+    call CommentMark(0, '[', ']')
 endfunction
 
 " Return string used to comment line for current filetype.
 function! CommentStr()
-  if &ft == 'cpp' || &ft == 'java' || &ft == 'javascript'
-    return '//'
-  elseif &ft == 'vim'
-    return '"'
-  elseif &ft == 'python' || &ft == 'perl' || &ft == 'sh' || &ft == 'R' || &ft == 'ruby'
-    return '#'
-  elseif &ft == 'lisp'
-    return ';'
-  endif
-    return ''
+    if &ft == 'cpp' || &ft == 'java' || &ft == 'javascript'
+	return '//'
+    elseif &ft == 'vim'
+	return '"'
+    elseif &ft == 'python' || &ft == 'perl' || &ft == 'sh' || &ft == 'R' || &ft == 'ruby'
+	return '#'
+    elseif &ft == 'lisp'
+	return ';'
+    endif
+	return ''
 endfunction
 
 nnoremap <Leader>c <Esc>:set opfunc=DoCommentOp<CR>g@<CR>
 nnoremap <Leader>C <Esc>:set opfunc=UnCommentOp<CR>g@<CR>
 vnoremap <Leader>c <Esc>:call CommentMark(1,'<','>')<CR>
 vnoremap <Leader>C <Esc>:call CommentMark(0,'<','>')<CR>
-
 
 " Save and Close current tab with [Ctrl + q]
 "
@@ -194,167 +194,168 @@ vnoremap <Leader>C <Esc>:call CommentMark(0,'<','>')<CR>
 " stty start undef
 nnoremap <C-q> :wq<CR>
 
-
 "カーソルの次の文字列を取得（引数は取得したい文字数）
 function! GetNextString(length) abort
-  let l:str = ""
-  for i in range(0, a:length-1)
-    let l:str = l:str.getline(".")[col(".")-1+i]
-  endfor
-  return l:str
+    let l:str = ""
+    for i in range(0, a:length-1)
+	let l:str = l:str.getline(".")[col(".")-1+i]
+    endfor
+    return l:str
 endfunction
 
 "カーソルの前の文字列を取得（引数は取得したい文字数）
 function! GetPrevString(length) abort
-  let l:str = ""
-  for i in range(0, a:length-1)
-    let l:str = getline(".")[col(".")-2-i].l:str
-  endfor
-  return l:str
+    let l:str = ""
+    for i in range(0, a:length-1)
+	let l:str = getline(".")[col(".")-2-i].l:str
+    endfor
+    return l:str
 endfunction
 
 "アルファベットかどうかを取得
 function! IsAlphabet(char) abort
-  let l:charIsAlphabet = (a:char =~ "\a")
-  return (l:charIsAlphabet)
+    let l:charIsAlphabet = (a:char =~ "\a")
+    return (l:charIsAlphabet)
 endfunction
 
 "全角かどうかを取得
 function! IsFullWidth(char) abort
-  let l:charIsFullWidth = (a:char =~ "[^\x01-\x7E]")
-  return (l:charIsFullWidth)
+    let l:charIsFullWidth = (a:char =~ "[^\x01-\x7E]")
+    return (l:charIsFullWidth)
 endfunction
 
 "数字かどうかを取得
 function! IsNum(char) abort
-  let l:charIsNum = (a:char >= "0" && a:char <= "9")
-  return (l:charIsNum)
+    let l:charIsNum = (a:char >= "0" && a:char <= "9")
+    return (l:charIsNum)
 endfunction
 
 "括弧の中にいるかどうかを取得
 function IsInsideParentheses(prevChar,nextChar) abort
-  let l:cursorIsInsideParentheses1 = (a:prevChar == "{" && a:nextChar == "}")
-  let l:cursorIsInsideParentheses2 = (a:prevChar == "[" && a:nextChar == "]")
-  let l:cursorIsInsideParentheses3 = (a:prevChar == "(" && a:nextChar == ")")
-  return (l:cursorIsInsideParentheses1 || l:cursorIsInsideParentheses2 || l:cursorIsInsideParentheses3)
+    let l:cursorIsInsideParentheses1 = (a:prevChar == "{" && a:nextChar == "}")
+    let l:cursorIsInsideParentheses2 = (a:prevChar == "[" && a:nextChar == "]")
+    let l:cursorIsInsideParentheses3 = (a:prevChar == "(" && a:nextChar == ")")
+    return (l:cursorIsInsideParentheses1 || l:cursorIsInsideParentheses2 || l:cursorIsInsideParentheses3)
 endfunction
 
 "括弧の入力
 function! InputParentheses(parenthesis) abort
-  let l:nextChar = GetNextString(1)
-  let l:prevChar = GetPrevString(1)
-  let l:parentheses = { "{": "}", "[": "]", "(": ")" }
-  
-  let l:nextCharIsEmpty = (l:nextChar == "")
-  let l:nextCharIsCloseParenthesis = (l:nextChar == "}" || l:nextChar == "]" || l:nextChar == ")")
-  let l:nextCharIsSpace = (l:nextChar == " ")
-  
-  if l:nextCharIsEmpty || l:nextCharIsCloseParenthesis || l:nextCharIsSpace
-    return a:parenthesis.l:parentheses[a:parenthesis]."\<LEFT>"
-  else
-    return a:parenthesis
-  endif
+    let l:nextChar = GetNextString(1)
+    let l:prevChar = GetPrevString(1)
+    let l:parentheses = { "{": "}", "[": "]", "(": ")" }
+    let l:nextCharIsEmpty = (l:nextChar == "")
+    let l:nextCharIsCloseParenthesis = (l:nextChar == "}" || l:nextChar == "]" || l:nextChar == ")")
+    let l:nextCharIsSpace = (l:nextChar == " ")
+
+    if l:nextCharIsEmpty || l:nextCharIsCloseParenthesis || l:nextCharIsSpace
+	return a:parenthesis.l:parentheses[a:parenthesis]."\<LEFT>"
+    else
+	return a:parenthesis
+    endif
 endfunction
 
 "閉じ括弧の入力
 function! InputCloseParenthesis(parenthesis) abort
-  let l:nextChar = GetNextString(1)
-  if l:nextChar == a:parenthesis
-    return "\<RIGHT>"
-  else
-    return a:parenthesis
-  endif
+    let l:nextChar = GetNextString(1)
+    if l:nextChar == a:parenthesis
+	return "\<RIGHT>"
+    else
+	return a:parenthesis
+    endif
 endfunction
 
 "クォーテーションの入力
 function! InputQuot(quot) abort
-  let l:nextChar = GetNextString(1)
-  let l:prevChar = GetPrevString(1)
-  
-  let l:cursorIsInsideQuotes = (l:prevChar == a:quot && l:nextChar == a:quot)
-  let l:nextCharIsEmpty = (l:nextChar == "")
-  let l:nextCharIsClosingParenthesis = (l:nextChar == "}" || l:nextChar == "]" || l:nextChar == ")")
-  let l:nextCharIsSpace = (l:nextChar == " ")
-  let l:prevCharIsAlphabet = IsAlphabet(l:prevChar)
-  let l:prevCharIsFullWidth = IsFullWidth(l:prevChar)
-  let l:prevCharIsNum = IsNum(l:prevChar)
-  let l:prevCharIsQuot = (l:prevChar == "\'" || l:prevChar == "\"" || l:prevChar == "\`")
-  
-  if l:cursorIsInsideQuotes
-    return "\<RIGHT>"
-  elseif l:prevCharIsAlphabet || l:prevCharIsNum || l:prevCharIsFullWidth || l:prevCharIsQuot
-    return a:quot
-  elseif l:nextCharIsEmpty || l:nextCharIsClosingParenthesis || l:nextCharIsSpace
-    return a:quot.a:quot."\<LEFT>"
-  else
-    return a:quot
-  endif
+    let l:nextChar = GetNextString(1)
+    let l:prevChar = GetPrevString(1)
+
+    let l:cursorIsInsideQuotes = (l:prevChar == a:quot && l:nextChar == a:quot)
+    let l:nextCharIsEmpty = (l:nextChar == "")
+    let l:nextCharIsClosingParenthesis = (l:nextChar == "}" || l:nextChar == "]" || l:nextChar == ")")
+    let l:nextCharIsSpace = (l:nextChar == " ")
+    let l:prevCharIsAlphabet = IsAlphabet(l:prevChar)
+    let l:prevCharIsFullWidth = IsFullWidth(l:prevChar)
+    let l:prevCharIsNum = IsNum(l:prevChar)
+    let l:prevCharIsQuot = (l:prevChar == "\'" || l:prevChar == "\"" || l:prevChar == "\`")
+
+    if l:cursorIsInsideQuotes
+	return "\<RIGHT>"
+    elseif l:prevCharIsAlphabet || l:prevCharIsNum || l:prevCharIsFullWidth || l:prevCharIsQuot
+	return a:quot
+    elseif l:nextCharIsEmpty || l:nextCharIsClosingParenthesis || l:nextCharIsSpace
+	return a:quot.a:quot."\<LEFT>"
+    else
+	return a:quot
+    endif
 endfunction
 
 "改行の入力
 function! InputCR() abort
-  let l:nextChar = GetNextString(1)
-  let l:prevChar = GetPrevString(1)
-  let l:cursorIsInsideParentheses = IsInsideParentheses(l:prevChar,l:nextChar)
-  
-  if l:cursorIsInsideParentheses
-    return "\<CR>\<ESC>\<S-o>\<TAB>"
-  else
-    return "\<CR>"
-  endif
+    let l:nextChar = GetNextString(1)
+    let l:prevChar = GetPrevString(1)
+    let l:cursorIsInsideParentheses = IsInsideParentheses(l:prevChar,l:nextChar)
+
+    if l:cursorIsInsideParentheses
+	return "\<CR>\<ESC>\<S-o>\<TAB>"
+    else
+	return "\<CR>"
+    endif
 endfunction
 
 "スペースキーの入力
 function! InputSpace() abort
-  let l:nextChar = GetNextString(1)
-  let l:prevChar = GetPrevString(1)
-  let l:cursorIsInsideParentheses = IsInsideParentheses(l:prevChar,l:nextChar)
-  
-  if l:cursorIsInsideParentheses
-    return "\<Space>\<Space>\<LEFT>"
-  else
-    return "\<Space>"
-  endif
+    let l:nextChar = GetNextString(1)
+    let l:prevChar = GetPrevString(1)
+    let l:cursorIsInsideParentheses = IsInsideParentheses(l:prevChar,l:nextChar)
+
+    if l:cursorIsInsideParentheses
+	return "\<Space>\<Space>\<LEFT>"
+    else
+	return "\<Space>"
+    endif
 endfunction
 
 "バックスペースの入力
 function! InputBS() abort
-  let l:nextChar = GetNextString(1)
-  let l:prevChar = GetPrevString(1)
-  let l:nextTwoString = GetNextString(2)
-  let l:prevTwoString = GetPrevString(2)
-  let l:cursorIsInsideParentheses = IsInsideParentheses(l:prevChar,l:nextChar)
-  let l:cursorIsInsideSpace1 = (l:prevTwoString == "{ " && l:nextTwoString == " }")
-  let l:cursorIsInsideSpace2 = (l:prevTwoString == "[ " && l:nextTwoString == " ]")
-  let l:cursorIsInsideSpace3 = (l:prevTwoString == "( " && l:nextTwoString == " )")
-  let l:cursorIsInsideSpace = (l:cursorIsInsideSpace1 || l:cursorIsInsideSpace2 || l:cursorIsInsideSpace3)
-  let l:existsQuot = (l:prevChar == "'" && l:nextChar == "'")
-  let l:existsDoubleQuot = (l:prevChar == "\"" && l:nextChar == "\"")
-  
-  if l:cursorIsInsideParentheses || l:cursorIsInsideSpace || l:existsQuot || l:existsDoubleQuot
-    return "\<BS>\<RIGHT>\<BS>"
-  else
-    return "\<BS>"
-  endif
+    let l:nextChar = GetNextString(1)
+    let l:prevChar = GetPrevString(1)
+    let l:nextTwoString = GetNextString(2)
+    let l:prevTwoString = GetPrevString(2)
+
+    let l:cursorIsInsideParentheses = IsInsideParentheses(l:prevChar,l:nextChar)
+
+    let l:cursorIsInsideSpace1 = (l:prevTwoString == "{ " && l:nextTwoString == " }")
+    let l:cursorIsInsideSpace2 = (l:prevTwoString == "[ " && l:nextTwoString == " ]")
+    let l:cursorIsInsideSpace3 = (l:prevTwoString == "( " && l:nextTwoString == " )")
+    let l:cursorIsInsideSpace = (l:cursorIsInsideSpace1 || l:cursorIsInsideSpace2 || l:cursorIsInsideSpace3)
+
+    let l:existsQuot = (l:prevChar == "'" && l:nextChar == "'")
+    let l:existsDoubleQuot = (l:prevChar == "\"" && l:nextChar == "\"")
+
+    if l:cursorIsInsideParentheses || l:cursorIsInsideSpace || l:existsQuot || l:existsDoubleQuot
+	return "\<BS>\<RIGHT>\<BS>"
+    else
+	return "\<BS>"
+    endif
 endfunction
 
 "括弧で挟む
 function! ClipInParentheses(parenthesis) abort
-  let l:mode = mode()
-  let l:parentheses = { "{": "}", "[": "]", "(": ")" }
-  if l:mode ==# "v"
-    return "\"ac".a:parenthesis."\<ESC>\"agpi".l:parentheses[a:parenthesis]
-  elseif l:mode ==# "V"
-    return "\"ac".l:parentheses[a:parenthesis]."\<ESC>\"aPi".a:parenthesis."\<CR>\<ESC>\<UP>=%"
-  endif
+    let l:mode = mode()
+    let l:parentheses = { "{": "}", "[": "]", "(": ")" }
+    if l:mode ==# "v"
+	return "\"ac".a:parenthesis."\<ESC>\"agpi".l:parentheses[a:parenthesis]
+    elseif l:mode ==# "V"
+	return "\"ac".l:parentheses[a:parenthesis]."\<ESC>\"aPi".a:parenthesis."\<CR>\<ESC>\<UP>=%"
+    endif
 endfunction
 
 "クォーテーションで挟む
 function! ClipInQuot(quot) abort
-  let l:mode = mode()
-  if l:mode ==# "v"
-    return "\"ac".a:quot."\<ESC>\"agpi".a:quot
-  endif
+    let l:mode = mode()
+    if l:mode ==# "v"
+	return "\"ac".a:quot."\<ESC>\"agpi".a:quot
+    endif
 endfunction
 
 inoremap <expr> { InputParentheses("{")
@@ -378,7 +379,7 @@ xnoremap <expr> ` ClipInQuot("\`")
 
 
 "-----------------------
-"" Display
+" Display
 "-----------------------
 set laststatus=2
 set showmatch
@@ -386,15 +387,14 @@ set hlsearch
 set wildmenu
 set lcs=tab:>.,trail:_,extends:\
 set virtualedit=onemore
-"ディレクトリ構造をtree形式で表示する
-let g:netrw_liststyle=3
+let g:netrw_liststyle=3 "ディレクトリ構造をtree形式で表示する
 
 "set list
 highlight JpSpace cterm=underline ctermfg=Blue guifg=Blue
 au BufRead,BufNew * match JpSpace /シ」シ」/
 
 "-----------------------
-"" Indent
+" Indent
 "-----------------------
 set autoindent
 set cindent
@@ -411,21 +411,23 @@ set smartindent
 " 日本語を含まない場合は fileencoding に encoding を使うようにする
 "-----------------------
 if has('autocmd')
-  function! AU_ReCheck_FENC()
-    if &fileencoding =~# 'iso-2022-jp' && search("[^\x01-\x7e]", 'n') == 0
-      let &fileencoding=&encoding
-    endif
-  endfunction
-  autocmd BufReadPost * call AU_ReCheck_FENC()
+    function! AU_ReCheck_FENC()
+	if &fileencoding =~# 'iso-2022-jp' && search("[^\x01-\x7e]", 'n') == 0
+	    let &fileencoding=&encoding
+	endif
+    endfunction
+    autocmd BufReadPost * call AU_ReCheck_FENC()
 endif
 
-"ステータスバー　表示内容
 function! SetStatusLine()
-  return '%F%m%r%h%w %=%Y %{&ff} %{&fenc} %l:%L '
+    return '%F%m%r%h%w %=%Y %{&ff} %{&fenc} %l:%L '
 endfunction
+
+"set statusline+=%F%m%r%h%w\ %=%Y\ \ \%{&ff}\ \ \%{&fileencoding}\ \ \%l:%L
 set statusline+=%!SetStatusLine()
-" set statusline+=%F%m%r%h%w\ %=%Y\ \ \%{&ff}\ \ \%{&fileencoding}\ \ \%l:%L
 
 "-----------------------
 """ Compiler
 "-----------------------
+"""aiq:q:qutocmd FileType pl,perl,cgi :compiler perl
+" compiler perl
