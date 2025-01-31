@@ -13,6 +13,19 @@ endif
 
 syntax on
 
+"-----------------------
+" Encoding
+" 日本語を含まない場合は fileencoding に encoding を使うようにする
+"-----------------------
+if has('autocmd')
+    function! AU_ReCheck_FENC()
+	if &fileencoding =~# 'iso-2022-jp' && search("[^\x01-\x7e]", 'n') == 0
+	    let &fileencoding=&encoding
+	endif
+    endfunction
+    autocmd BufReadPost * call AU_ReCheck_FENC()
+endif
+
 set t_Co=256
 let g:colors_name = "VSCode like theme"
 
@@ -405,19 +418,6 @@ set softtabstop=4
 set tabstop=8
 
 set smartindent
-
-"-----------------------
-" Encoding
-" 日本語を含まない場合は fileencoding に encoding を使うようにする
-"-----------------------
-if has('autocmd')
-    function! AU_ReCheck_FENC()
-	if &fileencoding =~# 'iso-2022-jp' && search("[^\x01-\x7e]", 'n') == 0
-	    let &fileencoding=&encoding
-	endif
-    endfunction
-    autocmd BufReadPost * call AU_ReCheck_FENC()
-endif
 
 function! SetStatusLine()
     return '%F%m%r%h%w %=%Y %{&ff} %{&fenc} %l:%L '
